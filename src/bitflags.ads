@@ -78,4 +78,8 @@ is
       ((Flags_Type (Left) and Flags_Type (Option'Enum_Rep (Right))) =
        Flags_Type (Option'Enum_Rep (Right)));
 
+   function Contains (Left, Right : Options) return Boolean with
+     Inline_Always, Global => null, Pre => Flags_Type'Size = Option_Type'Size,
+     Post => Contains'Result = ((Flags_Type (Left) and Flags_Type (Right)) = Flags_Type (Right));
+
 end Bitflags;

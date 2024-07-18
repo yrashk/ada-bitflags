@@ -33,4 +33,7 @@ package body Bitflags is
      ((Flags_Type (Left) and Flags_Type (Option'Enum_Rep (Right))) =
       Flags_Type (Option'Enum_Rep (Right)));
 
+   function Contains (Left, Right : Options) return Boolean is
+     (((Flags_Type (Left) and Flags_Type (Right))) = Flags_Type (Right));
+
 end Bitflags;
