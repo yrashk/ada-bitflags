@@ -29,7 +29,7 @@ package body Bitflags is
    function "-" (Left : Options; Right : Options) return Options is
      (Options (Flags_Type (Left) and (not Flags_Type (Right))));
 
-   function Includes (Left : Options; Right : Option) return Boolean is
+   function Contains (Left : Options; Right : Option) return Boolean is
      ((Flags_Type (Left) and Flags_Type (Option'Enum_Rep (Right))) =
       Flags_Type (Option'Enum_Rep (Right)));
 

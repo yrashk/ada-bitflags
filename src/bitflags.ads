@@ -71,10 +71,10 @@ is
          (Flags_Type ("-"'Result) or Flags_Type (Right)) = Flags_Type (Left)
        else True);
 
-   function Includes (Left : Options; Right : Option) return Boolean with
+   function Contains (Left : Options; Right : Option) return Boolean with
      Inline_Always, Global => null, Pre => Flags_Type'Size = Option_Type'Size,
      Post                  =>
-      Includes'Result =
+      Contains'Result =
       ((Flags_Type (Left) and Flags_Type (Option'Enum_Rep (Right))) =
        Flags_Type (Option'Enum_Rep (Right)));
 
