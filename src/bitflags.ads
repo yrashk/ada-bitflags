@@ -82,4 +82,8 @@ is
      Inline_Always, Global => null, Pre => Flags_Type'Size = Option_Type'Size,
      Post => Contains'Result = ((Flags_Type (Left) and Flags_Type (Right)) = Flags_Type (Right));
 
+private
+
+   pragma Assert (Flags_Type'Size = Option_Type'Size);
+
 end Bitflags;
