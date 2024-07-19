@@ -43,7 +43,7 @@ is
       and then (Flags_Type ("+"'Result) xor (Flags_Type (Right) or Option'Enum_Rep (Left))) =
         Flags_Type (0);
 
-   function "+" (Left, Right : Options) return Options with
+   overriding function "+" (Left, Right : Options) return Options with
      Inline_Always, Global => null, Pre => Flags_Type'Size = Option_Type'Size,
      Post                  =>
       (Flags_Type ("+"'Result) and Flags_Type (Left)) = Flags_Type (Left)
@@ -62,7 +62,7 @@ is
        then (Flags_Type ("-"'Result) or Flags_Type (Option'Enum_Rep (Right))) = Flags_Type (Left)
        else True);
 
-   function "-" (Left : Options; Right : Options) return Options with
+   overriding function "-" (Left : Options; Right : Options) return Options with
      Inline_Always, Global => null, Pre => Flags_Type'Size = Option_Type'Size,
      Post                  =>
       (Flags_Type ("-"'Result) and Flags_Type (Right)) = Flags_Type (0)

@@ -20,13 +20,13 @@ package body Bitflags is
    function "+" (Left : Option; Right : Options) return Options is
      (Options (Flags_Type (Right) or Flags_Type (Option'Enum_Rep (Left))));
 
-   function "+" (Left, Right : Options) return Options is
+   overriding function "+" (Left, Right : Options) return Options is
      (Options (Flags_Type (Right) or Flags_Type (Left)));
 
    function "-" (Left : Options; Right : Option) return Options is
      (Options (Flags_Type (Left) and (not Flags_Type (Option'Enum_Rep (Right)))));
 
-   function "-" (Left : Options; Right : Options) return Options is
+   overriding function "-" (Left : Options; Right : Options) return Options is
      (Options (Flags_Type (Left) and (not Flags_Type (Right))));
 
    function Contains (Left : Options; Right : Option) return Boolean is
