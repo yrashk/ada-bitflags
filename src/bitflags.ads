@@ -6,81 +6,73 @@ package Bitflags with
 is
 
    subtype Option is Option_Type;
-   type Options is new Flags_Type;
+   type Options is record
+      Value : Flags_Type;
+   end record;
 
    function Empty return Options with
      Inline_Always, Global => null, Pre => Flags_Type'Size = Option_Type'Size,
-     Post                  => Flags_Type (Empty'Result) = 0;
+     Post                  => Empty'Result.Value = 0;
 
    function Complete return Options with
      Inline_Always, Global => null, Pre => Flags_Type'Size = Option_Type'Size,
      Post                  =>
       (for all Opt in Option =>
-         (Flags_Type (Complete'Result) and Flags_Type (Option'Enum_Rep (Opt))) =
-         Flags_Type (Option'Enum_Rep (Opt)));
+         Contains (Complete'Result, Opt));
 
    function "+" (Left, Right : Option) return Options with
      Inline_Always, Global => null, Pre => Flags_Type'Size = Option_Type'Size,
      Post                  =>
-      (Flags_Type ("+"'Result) and Option'Enum_Rep (Left)) = Option'Enum_Rep (Left)
-      and then (Flags_Type ("+"'Result) and Option'Enum_Rep (Right)) = Option'Enum_Rep (Right)
-      and then (Flags_Type ("+"'Result) xor (Option'Enum_Rep (Left) or Option'Enum_Rep (Right))) =
+      Contains ("+"'Result, Left) and then Contains ("+"'Result, Right)
+      and then ("+"'Result.Value xor (Option'Enum_Rep (Left) or Option'Enum_Rep (Right))) =
         Flags_Type (0);
 
    function "+" (Left : Options; Right : Option) return Options with
      Inline_Always, Global => null, Pre => Flags_Type'Size = Option_Type'Size,
      Post                  =>
-      (Flags_Type ("+"'Result) and Flags_Type (Left)) = Flags_Type (Left)
-      and then (Flags_Type ("+"'Result) and Option'Enum_Rep (Right)) = Option'Enum_Rep (Right)
-      and then (Flags_Type ("+"'Result) xor (Flags_Type (Left) or Option'Enum_Rep (Right))) =
-        Flags_Type (0);
+      Contains ("+"'Result, Left) and then Contains ("+"'Result, Right)
+      and then ("+"'Result.Value xor (Left.Value or Option'Enum_Rep (Right))) = Flags_Type (0);
 
    function "+" (Left : Option; Right : Options) return Options with
      Inline_Always, Global => null, Pre => Flags_Type'Size = Option_Type'Size,
      Post                  =>
-      (Flags_Type ("+"'Result) and Flags_Type (Right)) = Flags_Type (Right)
-      and then (Flags_Type ("+"'Result) and Option'Enum_Rep (Left)) = Option'Enum_Rep (Left)
-      and then (Flags_Type ("+"'Result) xor (Flags_Type (Right) or Option'Enum_Rep (Left))) =
-        Flags_Type (0);
+      Contains ("+"'Result, Left) and then Contains ("+"'Result, Right)
+      and then ("+"'Result.Value xor (Right.Value or Option'Enum_Rep (Left))) = Flags_Type (0);
 
-   overriding function "+" (Left, Right : Options) return Options with
+   function "+" (Left, Right : Options) return Options with
      Inline_Always, Global => null, Pre => Flags_Type'Size = Option_Type'Size,
      Post                  =>
-      (Flags_Type ("+"'Result) and Flags_Type (Left)) = Flags_Type (Left)
-      and then (Flags_Type ("+"'Result) and Flags_Type (Right)) = Flags_Type (Right)
-      and then (Flags_Type ("+"'Result) xor (Flags_Type (Left) or Flags_Type (Right))) =
-        Flags_Type (0);
+      Contains ("+"'Result, Left) and then Contains ("+"'Result, Right)
+      and then ("+"'Result.Value xor (Left.Value or Right.Value)) = Flags_Type (0);
 
    function "-" (Left : Options; Right : Option) return Options with
      Inline_Always, Global => null, Pre => Flags_Type'Size = Option_Type'Size,
      Post                  =>
-      (Flags_Type ("-"'Result) and Flags_Type (Option'Enum_Rep (Right))) = Flags_Type (0)
+      ("-"'Result.Value and Flags_Type (Option'Enum_Rep (Right))) = Flags_Type (0)
       and then
-      (if
-         (Flags_Type (Left) and Flags_Type (Option'Enum_Rep (Right))) =
-         Flags_Type (Option'Enum_Rep (Right))
-       then (Flags_Type ("-"'Result) or Flags_Type (Option'Enum_Rep (Right))) = Flags_Type (Left)
+      (if Contains (Left, Right) then
+         ("-"'Result.Value or Flags_Type (Option'Enum_Rep (Right))) = Left.Value
        else True);
 
-   overriding function "-" (Left, Right : Options) return Options with
+   function "-" (Left, Right : Options) return Options with
      Inline_Always, Global => null, Pre => Flags_Type'Size = Option_Type'Size,
      Post                  =>
-      (Flags_Type ("-"'Result) and Flags_Type (Right)) = Flags_Type (0)
+      ("-"'Result.Value and Right.Value) = Flags_Type (0)
       and then
-      (if (Flags_Type (Left) and Flags_Type (Right)) = Flags_Type (Right) then
-         (Flags_Type ("-"'Result) or Flags_Type (Right)) = Flags_Type (Left)
+      (if (Left.Value and Right.Value) = Right.Value then
+         ("-"'Result.Value or Right.Value) = Left.Value
        else True);
 
    function Contains (Left : Options; Right : Option) return Boolean with
      Inline_Always, Global => null, Pre => Flags_Type'Size = Option_Type'Size,
      Post                  =>
       Contains'Result =
-      ((Flags_Type (Left) and Flags_Type (Option'Enum_Rep (Right))) =
+      ((Left.Value and Flags_Type (Option'Enum_Rep (Right))) =
        Flags_Type (Option'Enum_Rep (Right)));
 
    function Contains (Left, Right : Options) return Boolean with
      Inline_Always, Global => null, Pre => Flags_Type'Size = Option_Type'Size,
-     Post => Contains'Result = ((Flags_Type (Left) and Flags_Type (Right)) = Flags_Type (Right));
+     Post                  => Contains'Result = ((Left.Value and Right.Value) = Right.Value);
 
 private
 
