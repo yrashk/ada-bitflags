@@ -16,9 +16,7 @@ is
 
    function Complete return Options with
      Inline_Always, Global => null, Pre => Flags_Type'Size = Option_Type'Size,
-     Post                  =>
-      (for all Opt in Option =>
-         Contains (Complete'Result, Opt));
+     Post                  => (for all Opt in Option => Contains (Complete'Result, Opt));
 
    function "+" (Left, Right : Option) return Options with
      Inline_Always, Global => null, Pre => Flags_Type'Size = Option_Type'Size,

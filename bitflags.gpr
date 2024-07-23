@@ -30,4 +30,8 @@ project Bitflags is
       for Proof_Switches ("Ada") use ("--prover=cvc5,z3,altergo");
    end Prove;
 
+   package Pretty_Printer is
+      for Default_Switches ("Ada") use ("-M100");
+   end Pretty_Printer;
+
 end Bitflags;
