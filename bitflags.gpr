@@ -26,4 +26,8 @@ project Bitflags is
       for Artifacts (".") use ("share");
    end Install;
 
+   package Prove is
+      for Proof_Switches ("Ada") use ("--prover=cvc5,z3,altergo");
+   end Prove;
+
 end Bitflags;
