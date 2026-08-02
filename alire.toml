@@ -8,3 +8,6 @@ maintainers-logins = ["yrashk"]
 licenses = "Apache-2.0"
 website = ""
 tags = []
+
+[[depends-on]]
+gnatprove = "^16.1.0"

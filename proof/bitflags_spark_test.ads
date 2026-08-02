@@ -3,9 +3,7 @@ private package Bitflags_SPARK_Test with
   SPARK_Mode
 is
 
-   type Option is (Test, This) with
-     Size => 8;
-   for Option use (Test => 2#01#, This => 2#10#);
+   type Option is (Test, This);
 
    type Flags_Type is mod 2**8 with
      Size => 8;
