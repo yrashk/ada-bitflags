@@ -8,6 +8,9 @@ A generic, SPARK-verified implementation of typed bitflags.
 alr exec -- gnatprove -P proof/bitflags_proof.gpr -U
 ```
 
+GNATprove analyzes generic code through concrete instantiations. The proof project covers a nominal
+two-option instance plus minimum-width and fully occupied 8- and 64-bit instances.
+
 ## Limitations
 
 * GNAT-only.

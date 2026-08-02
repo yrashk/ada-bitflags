@@ -7,6 +7,10 @@ package body Bitflags is
    begin
       for Opt in Option loop
          Result := Result + Opt;
+         --  Every option processed so far is present in Result.
+         pragma Loop_Invariant
+           (for all Processed in Option'First .. Opt =>
+              Contains (Result, Processed));
       end loop;
       return Result;
    end Complete;

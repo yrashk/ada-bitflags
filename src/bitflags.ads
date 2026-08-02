@@ -16,7 +16,7 @@ is
    with Ghost;
 
    function Mask (Value : Option) return Flags_Type is
-     (Flags_Type (2) ** Option'Pos (Value))
+     ((Flags_Type (1) + Flags_Type (1)) ** Option'Pos (Value))
    with Inline_Always, Global => null, Pre => Valid_Configuration;
 
    function Empty return Options with
